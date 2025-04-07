@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Personal Info Form</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    form { max-width: 800px; margin: auto; }
-    label { display: block; margin-top: 10px; font-weight: bold; }
-    input, select { width: 100%; padding: 8px; margin-top: 4px; }
-    button { margin-top: 20px; padding: 10px 15px; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Information Form</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <h2>Personal Information Form</h2>
@@ -22,6 +17,7 @@
 
     <label>National ID</label>
     <input type="text" id="nationalId" required />
+    <small id="duplicateWarning" style="color: red; display: none;">⚠️ Duplicate entry detected!</small>
 
     <label>Birthday (MM/DD/YYYY)</label>
     <input type="date" id="birthday" />
@@ -118,91 +114,6 @@
     <button type="button" onclick="downloadCSV()">Download CSV</button>
   </form>
 
-  <script>
-    const form = document.getElementById('infoForm');
-    const dataStore = [];
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const formData = {
-        userId: form.userId.value.trim(),
-        fullName: form.fullName.value.trim(),
-        nationalId: form.nationalId.value,
-        birthday: form.birthday.value,
-        gender: form.gender.value,
-        religion: form.religion.value,
-        occupation: form.occupation.value,
-        qualification: form.qualification.value,
-        graduationYear: form.graduationYear.value,
-        maritalStatus: form.maritalStatus.value,
-        marriageDate: form.marriageDate.value,
-        occupationBeforeMarriage: form.occupationBeforeMarriage.value,
-        residence: form.residence.value,
-        address: form.address.value,
-        center: form.center.value,
-        city: form.city.value,
-        telephone: form.telephone.value,
-        mobile: form.mobile.value,
-        disability: form.disability.value,
-        illness: form.illness.value,
-        health: form.health.value
-      };
-
-      // Prevent duplicates
-      const duplicate = dataStore.find(d =>
-      (d.userId === formData.userId && d.fullName.toLowerCase() === formData.fullName.toLowerCase()) ||
-      d.nationalId === formData.nationalId 
-    );
-
-
-      if (duplicate) {
-        alert("Duplicate entry detected!");
-        return;
-      }
-
-      dataStore.push(formData);
-      alert("Data saved!");
-      form.reset();
-    });
-
-    const nameInput = document.getElementById('fullName');
-    const nationalIdInput = document.getElementById('nationalId');
-    const warning = document.getElementById('duplicateWarning');
-    const submitBtn = form.querySelector('button[type="submit"]');
-
-    function checkDuplicateLive() {
-    const nameVal = nameInput.value.trim().toLowerCase();
-    const idVal = nationalIdInput.value.trim();
-
-    const isDuplicate = dataStore.some(d =>
-        (d.userId === form.userId.value && d.fullName.toLowerCase() === nameVal) ||
-        d.nationalId === idVal
-    );
-
-    if (isDuplicate) {
-        warning.style.display = 'inline';
-        submitBtn.disabled = true;
-    } else {
-        warning.style.display = 'none';
-        submitBtn.disabled = false;
-    }
-    }
-
-    nameInput.addEventListener('input', checkDuplicateLive);
-    nationalIdInput.addEventListener('input', checkDuplicateLive);
-
-    function downloadCSV() {
-      const headers = Object.keys(dataStore[0] || {}).join(",");
-      const rows = dataStore.map(obj => Object.values(obj).map(v => `"${v}"`).join(","));
-      const csvContent = [headers, ...rows].join("\n");
-
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      link.setAttribute("href", URL.createObjectURL(blob));
-      link.setAttribute("download", "personal_info.csv");
-      link.click();
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
