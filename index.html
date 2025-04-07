@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Personal Info Form</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    form { max-width: 800px; margin: auto; }
+    label { display: block; margin-top: 10px; font-weight: bold; }
+    input, select { width: 100%; padding: 8px; margin-top: 4px; }
+    button { margin-top: 20px; padding: 10px 15px; }
+  </style>
+</head>
+<body>
+  <h2>Personal Information Form</h2>
+  <form id="infoForm">
+    <label>User ID</label>
+    <input type="text" id="userId" required />
+
+    <label>Full Name</label>
+    <input type="text" id="fullName" required />
+
+    <label>National ID</label>
+    <input type="text" id="nationalId" required />
+
+    <label>Birthday (MM/DD/YYYY)</label>
+    <input type="date" id="birthday" />
+
+    <label>Gender</label>
+    <select id="gender"><option>Male</option><option>Female</option><option>Other</option></select>
+
+    <label>Religion</label>
+    <select id="religion">
+        <option value="">-- Select Religion --</option>
+        <option value="Christianity">Christianity</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <label>Occupation</label>
+    <input type="text" id="occupation" />
+
+    <label>Qualification Type</label>
+    <select id="qualification">
+        <option value="">-- Select Qualification Type --</option>
+        <option value="High School">High School</option>
+        <option value="Diploma">Diploma</option>
+        <option value="Bachelor's">Bachelor's</option>
+        <option value="Master's">Master's</option>
+        <option value="PhD">PhD</option>
+        <option value="Professional Certification">Professional Certification</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <label>Graduation Year</label>
+    <input type="date" id="graduationYear" />
+
+    <label>Marital Status</label>
+    <select id="maritalStatus">
+        <option value="">-- Select Marital Status --</option>
+        <option value="Single">Single</option>
+        <option value="Married">Married</option>
+        <option value="Divorced">Divorced</option>
+        <option value="Widowed">Widowed</option>
+        <option value="Separated">Separated</option>
+      </select>
+
+    <label>Marriage Date</label>
+    <input type="date" id="marriageDate" />
+
+    <label>Occupation Before Marriage</label>
+    <input type="text" id="occupationBeforeMarriage" />
+
+    <label>Permanent Residence</label>
+    <input type="text" id="residence" />
+
+    <label>Address</label>
+    <input type="text" id="address" />
+
+    <label>Center</label>
+    <input type="text" id="center" />
+
+    <label>City</label>
+    <input type="text" id="city" />
+
+    <label>Telephone</label>
+    <input type="text" id="telephone" />
+
+    <label>Mobile</label>
+    <input type="text" id="mobile" />
+
+    <label>Disability Type</label>
+    <select id="disability">
+        <option value="">-- Select Disability Type --</option>
+        <option value="None">None</option>
+        <option value="Visual Impairment">Visual Impairment</option>
+        <option value="Hearing Impairment">Hearing Impairment</option>
+        <option value="Physical Disability">Physical Disability</option>
+        <option value="Mental Disability">Mental Disability</option>
+        <option value="Chronic Illness">Chronic Illness</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <label>Illness Type</label>
+    <input type="text" id="illness" />
+
+    <label>Health Status</label>
+    <select id="health">
+        <option value="">-- Select Health Status --</option>
+        <option value="Healthy">Healthy</option>
+        <option value="Minor Illness">Minor Illness</option>
+        <option value="Chronic Condition">Chronic Condition</option>
+        <option value="Disabled">Disabled</option>
+        <option value="Recovering">Recovering</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <button type="submit">Submit</button>
+    <button type="button" onclick="downloadCSV()">Download CSV</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('infoForm');
+    const dataStore = [];
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = {
+        userId: form.userId.value.trim(),
+        fullName: form.fullName.value.trim(),
+        nationalId: form.nationalId.value,
+        birthday: form.birthday.value,
+        gender: form.gender.value,
+        religion: form.religion.value,
+        occupation: form.occupation.value,
+        qualification: form.qualification.value,
+        graduationYear: form.graduationYear.value,
+        maritalStatus: form.maritalStatus.value,
+        marriageDate: form.marriageDate.value,
+        occupationBeforeMarriage: form.occupationBeforeMarriage.value,
+        residence: form.residence.value,
+        address: form.address.value,
+        center: form.center.value,
+        city: form.city.value,
+        telephone: form.telephone.value,
+        mobile: form.mobile.value,
+        disability: form.disability.value,
+        illness: form.illness.value,
+        health: form.health.value
+      };
+
+      // Prevent duplicates
+      const duplicate = dataStore.find(d =>
+      (d.userId === formData.userId && d.fullName.toLowerCase() === formData.fullName.toLowerCase()) ||
+      d.nationalId === formData.nationalId 
+    );
+
+
+      if (duplicate) {
+        alert("Duplicate entry detected!");
+        return;
+      }
+
+      dataStore.push(formData);
+      alert("Data saved!");
+      form.reset();
+    });
+
+    const nameInput = document.getElementById('fullName');
+    const nationalIdInput = document.getElementById('nationalId');
+    const warning = document.getElementById('duplicateWarning');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    function checkDuplicateLive() {
+    const nameVal = nameInput.value.trim().toLowerCase();
+    const idVal = nationalIdInput.value.trim();
+
+    const isDuplicate = dataStore.some(d =>
+        (d.userId === form.userId.value && d.fullName.toLowerCase() === nameVal) ||
+        d.nationalId === idVal
+    );
+
+    if (isDuplicate) {
+        warning.style.display = 'inline';
+        submitBtn.disabled = true;
+    } else {
+        warning.style.display = 'none';
+        submitBtn.disabled = false;
+    }
+    }
+
+    nameInput.addEventListener('input', checkDuplicateLive);
+    nationalIdInput.addEventListener('input', checkDuplicateLive);
+
+    function downloadCSV() {
+      const headers = Object.keys(dataStore[0] || {}).join(",");
+      const rows = dataStore.map(obj => Object.values(obj).map(v => `"${v}"`).join(","));
+      const csvContent = [headers, ...rows].join("\n");
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.setAttribute("href", URL.createObjectURL(blob));
+      link.setAttribute("download", "personal_info.csv");
+      link.click();
+    }
+  </script>
+</body>
+</html>
