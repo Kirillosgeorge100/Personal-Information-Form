@@ -1,27 +1,63 @@
+/* Default (light) theme */
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
+    background-color: #ffffff;
+    color: #000000;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
+  
   form {
     max-width: 800px;
     margin: auto;
   }
+  
   label {
     display: block;
     margin-top: 10px;
     font-weight: bold;
   }
-  input, select {
+  
+  input,
+  select {
     width: 100%;
     padding: 8px;
     margin-top: 4px;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #ccc;
   }
+  
   button {
     margin-top: 20px;
     padding: 10px 15px;
+    cursor: pointer;
   }
+  
   small {
     display: inline-block;
     margin-top: 4px;
+  }
+  
+  /* Dark theme */
+  body.dark-theme {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+  
+  body.dark-theme input,
+  body.dark-theme select {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #444;
+  }
+  
+  body.dark-theme button {
+    background-color: #333;
+    color: #e0e0e0;
+  }
+  
+  body.dark-theme small {
+    color: #ff6b6b;
   }
   
